@@ -1,0 +1,70 @@
+version: '3'
+services:
+  storefront:
+    build: ./storefront/.
+    container_name: storefront-local
+    ports:
+      - 4000:80
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger-local
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+  usersdb:
+    image: amazon/dynamodb-local:1.11.477
+    container_name: dynamodb-local
+    ports:
+      - 8000:8000
+    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-inMemory"]
+  ordersdb:
+    image: postgres:latest
+    container_name: ordersdb-local
+    env_file:
+      - ordersdb.env
+    volumes:
+      - ./.docker/ordersdb/data/db/:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  productsdb:
+    image: mongo:latest
+    container_name: productsdb-local
+    volumes:
+      - ./.docker/productsdb/initdb.d/:/docker-entrypoint-initdb.d/
+      - ./.docker/productsdb/data/db/:/data/db/
+      - ./.docker/productsdb/data/log/:/var/log/mongodb/
+    env_file:
+      - productsdb.env
+    ports:
+      - 27017:27017
+    volumes:
+     - ./init-products.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+  zookeeper:
+    image: strimzi/kafka:0.11.4-kafka-2.1.0
+    container_name: zookeeper-local
+    ports:
+      - 2181:2181
+    command: [
+        "sh", "-c",
+        "bin/zookeeper-server-start.sh config/zookeeper.properties"
+    ]
+  kafka:
+    image: strimzi/kafka:0.11.4-kafka-2.1.0
+    container_name: kafka-local
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    command: [
+        "sh", "-c",
+        "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT}"
+    ]
+    env_file:
+      - kafka.env
+volumes:
+  db-data:
+    driver: local

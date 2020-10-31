@@ -1,0 +1,63 @@
+<div class="card">
+  <table class="table table-hover shopping-cart-wrap">
+    <thead class="text-muted">
+      <tr>
+        <th scope="col">Producto</th>
+        <th scope="col" width="120">Cantidad</th>
+        <th scope="col" width="120">Precio</th>
+        <th scope="col" width="200" class="text-right">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let detail of cart().details">
+        <td>
+          <figure class="media">
+            <div class="img-wrap">
+              <img
+                src="{{ 'https://robohash.org/' + detail.productId }}"
+                class="img-thumbnail img-sm"
+              />
+            </div>
+            <figcaption class="media-body">
+              <h6 class="title text-truncate">{{ detail.productDescription }}</h6>
+              <dl class="param param-inline small">
+                <dt>Size:</dt>
+                <dd>XXL</dd>
+              </dl>
+              <dl class="param param-inline small">
+                <dt>Color:</dt>
+                <dd>Orange color</dd>
+              </dl>
+            </figcaption>
+          </figure>
+        </td>
+        <td>
+          <select [value]="detail.quantity" (change)="detail.changeQuantity($event.target.value)"
+            class="form-control">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </td>
+        <td>
+          <div class="price-wrap">
+            <var class="price">S/ {{ detail.totalPrice }}</var>
+            <small class="text-muted">(S/ {{ detail.price }} c/u)</small>
+          </div>
+          <!-- price-wrap .// -->
+        </td>
+        <td class="text-right">
+          <a class="btn btn-danger" style="color: white;" (click)="onRemoveCartDetail(this.detail)"> × Remover</a>
+        </td>
+      </tr>
+      <tr *ngIf="cart().details.length > 0">
+        <td class="text-right" colspan="4">
+          <a class="btn btn-primary" style="color: white;" (click)="onCheckout()">Completar compra</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- card.// -->
+

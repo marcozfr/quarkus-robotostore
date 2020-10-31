@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+  <a class="navbar-brand" routerLink="/home" routerLinkActive="active" >RobotoStore</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="main_nav">
+
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a routerLink="/checkout" routerLinkActive="active"
+          class="nav-link navbar-link-2 waves-effect">
+          <span class="badge badge-pill red">{{getCartSize()}}</span>
+          <i class="fas fa-shopping-cart pl-0"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="showForm = true" class="nav-link">
+          <span class="badge">{{getUsername()}}</span>
+          <i class="fas fa-username pl-2"></i>
+        </a>
+      </li>
+    </ul>
+    <form *ngIf="showForm" class="form-inline my-2 my-lg-0"(ngSubmit)="onSubmit()" [formGroup]="form">
+      <input class="form-control mr-sm-2" type="text" placeholder="Username" required
+            aria-label="Cambiar usuario" formControlName="username">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cambiar usuario</button>
+    </form>
+
+  </div> <!-- navbar-collapse.// -->
+
+</nav>

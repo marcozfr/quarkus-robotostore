@@ -1,0 +1,22 @@
+<figure class="card card-product">
+  <div class="img-wrap">
+    <img src="{{ 'https://robohash.org/' + product.id }}">
+  </div>
+  <figcaption class="info-wrap">
+    <h6 class="title text-dots"><a href="#">{{product.description}}</a></h6>
+    <div class="action-wrap">
+      <a class="btn btn-primary btn-sm float-right btn-animated"
+        [ngStyle]="{'pointer-events': product.stock <= 0 ? 'none' : 'auto'}"
+         style="color: white;" (click)="onAddToCart(this.product)">Agregar</a>
+      <div class="price-wrap h5">
+        <span class="price-new" *ngIf="product.discountedPrice" >S/ {{product.discountedPrice}}</span>
+        <span class="price-new" *ngIf="!product.discountedPrice" >S/ {{product.originalPrice}}</span>
+        <del class="price-old" *ngIf="product.discountedPrice" >S/ {{product.originalPrice}}</del>
+      </div> <!-- price-wrap.// -->
+      <div class="stock-wrap">
+        <span *ngIf="product.stock > 0">Solo quedan <b>{{product.stock}}</b> unidades!</span>
+        <span *ngIf="product.stock <= 0">Sin unidades disponibles!</span>
+      </div>
+    </div> <!-- action-wrap -->
+  </figcaption>
+</figure> <!-- card // -->

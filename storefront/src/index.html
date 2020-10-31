@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Storefront</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet" id="fontsawesome-css">
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    // jquery ready start
+    $(document).ready(function() {
+      // jQuery code
+
+      //////////////////////// Prevent closing from click inside dropdown
+        $(document).on('click', '.dropdown-menu', function (e) {
+          e.stopPropagation();
+        });
+
+        // make it as accordion for smaller screens
+        if ($(window).width() < 992) {
+          $('.dropdown-menu a').click(function(e){
+            e.preventDefault();
+              if($(this).next('.submenu').length){
+                $(this).next('.submenu').toggle();
+              }
+              $('.dropdown').on('hide.bs.dropdown', function () {
+            $(this).find('.submenu').hide();
+          })
+          });
+      }
+
+    }); // jquery end
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
